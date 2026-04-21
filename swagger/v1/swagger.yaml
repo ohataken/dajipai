@@ -1,0 +1,77 @@
+---
+openapi: 3.0.1
+info:
+  title: API V1
+  version: v1
+paths:
+  "/api/cards":
+    post:
+      summary: Creates a card
+      tags:
+      - Cards
+      parameters: []
+      responses:
+        '201':
+          description: card created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  uuid:
+                    type: string
+                  name:
+                    type: string
+                  pinyin:
+                    type: string
+                  created_at:
+                    type: string
+                    format: date-time
+                  updated_at:
+                    type: string
+                    format: date-time
+                required:
+                - id
+                - uuid
+                - name
+                - pinyin
+                - created_at
+                - updated_at
+        '422':
+          description: invalid request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      type: string
+                required:
+                - errors
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                card:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                    pinyin:
+                      type: string
+                  required:
+                  - name
+                  - pinyin
+              required:
+              - card
+servers:
+- url: https://{defaultHost}
+  variables:
+    defaultHost:
+      default: www.example.com
