@@ -5,6 +5,41 @@ info:
   version: v1
 paths:
   "/api/cards":
+    get:
+      summary: Lists cards
+      tags:
+      - Cards
+      responses:
+        '200':
+          description: cards listed
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    uuid:
+                      type: string
+                    name:
+                      type: string
+                    pinyin:
+                      type: string
+                    created_at:
+                      type: string
+                      format: date-time
+                    updated_at:
+                      type: string
+                      format: date-time
+                  required:
+                  - id
+                  - uuid
+                  - name
+                  - pinyin
+                  - created_at
+                  - updated_at
     post:
       summary: Creates a card
       tags:

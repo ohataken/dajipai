@@ -1,5 +1,10 @@
 module Api
   class CardsController < ApplicationController
+    def index
+      cards = Card.all
+      render json: cards.map { |card| serialize(card) }
+    end
+
     def create
       card = Card.new(card_params)
 

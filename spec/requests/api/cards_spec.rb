@@ -2,6 +2,30 @@ require 'swagger_helper'
 
 RSpec.describe 'api/cards', type: :request do
   path '/api/cards' do
+    get 'Lists cards' do
+      tags 'Cards'
+      produces 'application/json'
+
+      response '200', 'cards listed' do
+        schema type: :array,
+               items: {
+                 type: :object,
+                 properties: {
+                   id: { type: :integer },
+                   uuid: { type: :string },
+                   name: { type: :string },
+                   pinyin: { type: :string },
+                   created_at: { type: :string, format: 'date-time' },
+                   updated_at: { type: :string, format: 'date-time' }
+                 },
+                 required: %w[id uuid name pinyin created_at updated_at]
+               }
+
+        before { Card.create!(name: '打', pinyin: 'dǎ') }
+        run_test!
+      end
+    end
+
     post 'Creates a card' do
       tags 'Cards'
       consumes 'application/json'
