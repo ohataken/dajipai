@@ -1,6 +1,8 @@
 module Api
   module Owner
     class CardsController < ApplicationController
+      before_action :authenticate_owner!
+
       def create
         card = Card.new(card_params)
 
@@ -12,6 +14,19 @@ module Api
       end
 
       private
+
+      def authenticate_owner!
+        provided = request.authorization.to_s.sub(/\ABearer /, "")
+        expected = owner_token
+
+        unless expected.present? && ActiveSupport::SecurityUtils.secure_compare(provided, expected)
+          render json: { errors: [ "Unauthorized" ] }, status: :unauthorized
+        end
+      end
+
+      def owner_token
+        ENV.fetch("OWNER_TOKEN", "")
+      end
 
       def card_params
         params.expect(card: [ :name, :pinyin ])
