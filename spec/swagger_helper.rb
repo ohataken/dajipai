@@ -31,7 +31,53 @@ RSpec.configure do |config|
             }
           }
         }
-      ]
+      ],
+      components: {
+        schemas: {
+          Card: {
+            type: :object,
+            properties: {
+              uuid: { type: :string },
+              name: { type: :string },
+              pinyin: { type: :string }
+            },
+            required: %w[uuid name pinyin]
+          },
+          OwnerCard: {
+            type: :object,
+            properties: {
+              id: { type: :integer },
+              uuid: { type: :string },
+              name: { type: :string },
+              pinyin: { type: :string },
+              created_at: { type: :string, format: 'date-time' },
+              updated_at: { type: :string, format: 'date-time' }
+            },
+            required: %w[id uuid name pinyin created_at updated_at]
+          },
+          CardInput: {
+            type: :object,
+            properties: {
+              card: {
+                type: :object,
+                properties: {
+                  name: { type: :string },
+                  pinyin: { type: :string }
+                },
+                required: %w[name pinyin]
+              }
+            },
+            required: %w[card]
+          },
+          Errors: {
+            type: :object,
+            properties: {
+              errors: { type: :array, items: { type: :string } }
+            },
+            required: %w[errors]
+          }
+        }
+      }
     }
   }
 
