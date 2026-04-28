@@ -11,14 +11,11 @@ RSpec.describe 'api/cards', type: :request do
                items: {
                  type: :object,
                  properties: {
-                   id: { type: :integer },
                    uuid: { type: :string },
                    name: { type: :string },
-                   pinyin: { type: :string },
-                   created_at: { type: :string, format: 'date-time' },
-                   updated_at: { type: :string, format: 'date-time' }
+                   pinyin: { type: :string }
                  },
-                 required: %w[id uuid name pinyin created_at updated_at]
+                 required: %w[uuid name pinyin]
                }
 
         before { Card.create!(name: '打', pinyin: 'dǎ') }
@@ -48,14 +45,11 @@ RSpec.describe 'api/cards', type: :request do
       response '201', 'card created' do
         schema type: :object,
                properties: {
-                 id: { type: :integer },
                  uuid: { type: :string },
                  name: { type: :string },
-                 pinyin: { type: :string },
-                 created_at: { type: :string, format: 'date-time' },
-                 updated_at: { type: :string, format: 'date-time' }
+                 pinyin: { type: :string }
                },
-               required: %w[id uuid name pinyin created_at updated_at]
+               required: %w[uuid name pinyin]
 
         let(:card) { { card: { name: '打', pinyin: 'dǎ' } } }
         run_test!
