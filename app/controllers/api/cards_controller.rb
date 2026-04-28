@@ -23,12 +23,9 @@ module Api
 
     def serialize(card)
       {
-        id: card.id,
         uuid: card.uuid,
         name: card.name,
-        pinyin: card.pinyin,
-        created_at: card.created_at,
-        updated_at: card.updated_at
+        pinyin: card.pinyin
       }
     end
   end
