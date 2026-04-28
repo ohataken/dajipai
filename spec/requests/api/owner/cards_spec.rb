@@ -7,20 +7,7 @@ RSpec.describe 'api/owner/cards', type: :request do
       consumes 'application/json'
       produces 'application/json'
       parameter name: :Authorization, in: :header, type: :string, required: true
-      parameter name: :card, in: :body, schema: {
-        type: :object,
-        properties: {
-          card: {
-            type: :object,
-            properties: {
-              name: { type: :string },
-              pinyin: { type: :string }
-            },
-            required: %w[name pinyin]
-          }
-        },
-        required: %w[card]
-      }
+      parameter name: :card, in: :body, schema: { '$ref' => '#/components/schemas/CardInput' }
 
       before do
         allow_any_instance_of(Api::Owner::CardsController)
@@ -28,16 +15,7 @@ RSpec.describe 'api/owner/cards', type: :request do
       end
 
       response '201', 'card created' do
-        schema type: :object,
-               properties: {
-                 id: { type: :integer },
-                 uuid: { type: :string },
-                 name: { type: :string },
-                 pinyin: { type: :string },
-                 created_at: { type: :string, format: 'date-time' },
-                 updated_at: { type: :string, format: 'date-time' }
-               },
-               required: %w[id uuid name pinyin created_at updated_at]
+        schema '$ref' => '#/components/schemas/OwnerCard'
 
         let(:Authorization) { 'Bearer valid-token' }
         let(:card) { { card: { name: '打', pinyin: 'dǎ' } } }
@@ -45,11 +23,7 @@ RSpec.describe 'api/owner/cards', type: :request do
       end
 
       response '422', 'invalid request' do
-        schema type: :object,
-               properties: {
-                 errors: { type: :array, items: { type: :string } }
-               },
-               required: %w[errors]
+        schema '$ref' => '#/components/schemas/Errors'
 
         let(:Authorization) { 'Bearer valid-token' }
         let(:card) { { card: { name: '', pinyin: '' } } }
@@ -57,11 +31,7 @@ RSpec.describe 'api/owner/cards', type: :request do
       end
 
       response '401', 'unauthorized' do
-        schema type: :object,
-               properties: {
-                 errors: { type: :array, items: { type: :string } }
-               },
-               required: %w[errors]
+        schema '$ref' => '#/components/schemas/Errors'
 
         let(:Authorization) { 'Bearer wrong-token' }
         let(:card) { { card: { name: '打', pinyin: 'dǎ' } } }
