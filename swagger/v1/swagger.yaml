@@ -41,6 +41,38 @@ paths:
           application/json:
             schema:
               "$ref": "#/components/schemas/CardInput"
+  "/api/cards/{uuid}":
+    parameters:
+    - name: uuid
+      in: path
+      required: true
+      schema:
+        type: string
+    put:
+      summary: Updates a card
+      tags:
+      - Cards
+      parameters: []
+      responses:
+        '200':
+          description: card updated
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Card"
+        '404':
+          description: card not found
+        '422':
+          description: invalid request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Errors"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/CardInput"
   "/api/owner/cards":
     post:
       summary: Creates a card

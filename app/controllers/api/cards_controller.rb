@@ -15,6 +15,16 @@ module Api
       end
     end
 
+    def update
+      card = Card.find_by!(uuid: params[:uuid])
+
+      if card.update(card_params)
+        render json: serialize(card)
+      else
+        render json: { errors: card.errors.full_messages }, status: :unprocessable_entity
+      end
+    end
+
     private
 
     def card_params
