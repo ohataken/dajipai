@@ -6,7 +6,7 @@ Rails.application.routes.draw do
   get "up" => "rails/health#show", as: :rails_health_check
 
   namespace :api do
-    resources :cards, only: [ :index, :create ]
+    resources :cards, only: [ :index, :create, :update ], param: :uuid
 
     namespace :owner do
       resources :cards, only: [ :create ]
