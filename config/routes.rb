@@ -12,7 +12,9 @@ Rails.application.routes.draw do
     end
 
     namespace :owner do
-      resources :cards, only: [ :create ]
+      resources :cards, only: [ :create ], param: :uuid do
+        resources :card_tags, only: [ :create ], path: "tags"
+      end
       resources :tags, only: [ :create ]
     end
   end

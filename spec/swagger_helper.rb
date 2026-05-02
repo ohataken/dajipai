@@ -103,6 +103,13 @@ RSpec.configure do |config|
             },
             required: %w[tag]
           },
+          CardTagInput: {
+            type: :object,
+            properties: {
+              tag_slug: { type: :string }
+            },
+            required: %w[tag_slug]
+          },
           Errors: {
             type: :object,
             properties: {
