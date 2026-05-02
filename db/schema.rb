@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_04_20_044344) do
+ActiveRecord::Schema[8.1].define(version: 2026_05_02_043811) do
   create_table "cards", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.string "name", null: false
@@ -18,5 +18,14 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_20_044344) do
     t.datetime "updated_at", null: false
     t.string "uuid", null: false
     t.index ["uuid"], name: "index_cards_on_uuid", unique: true
+  end
+
+  create_table "tags", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "name", null: false
+    t.string "slug", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_tags_on_name", unique: true
+    t.index ["slug"], name: "index_tags_on_slug", unique: true
   end
 end
