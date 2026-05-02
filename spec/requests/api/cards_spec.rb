@@ -9,8 +9,15 @@ RSpec.describe 'api/cards', type: :request do
       response '200', 'cards listed' do
         schema type: :array, items: { '$ref' => '#/components/schemas/Card' }
 
-        before { Card.create!(name: '打', pinyin: 'dǎ') }
-        run_test!
+        before do
+          card = Card.create!(name: '打', pinyin: 'dǎ')
+          card.tags << Tag.create!(name: '動詞', slug: 'verbs')
+        end
+
+        run_test! do |response|
+          body = JSON.parse(response.body)
+          expect(body.first['tags']).to eq([ { 'slug' => 'verbs', 'name' => '動詞' } ])
+        end
       end
     end
 

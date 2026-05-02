@@ -39,9 +39,10 @@ RSpec.configure do |config|
             properties: {
               uuid: { type: :string },
               name: { type: :string },
-              pinyin: { type: :string }
+              pinyin: { type: :string },
+              tags: { type: :array, items: { '$ref' => '#/components/schemas/Tag' } }
             },
-            required: %w[uuid name pinyin]
+            required: %w[uuid name pinyin tags]
           },
           Tag: {
             type: :object,

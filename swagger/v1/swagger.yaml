@@ -173,10 +173,15 @@ components:
           type: string
         pinyin:
           type: string
+        tags:
+          type: array
+          items:
+            "$ref": "#/components/schemas/Tag"
       required:
       - uuid
       - name
       - pinyin
+      - tags
     Tag:
       type: object
       properties:
