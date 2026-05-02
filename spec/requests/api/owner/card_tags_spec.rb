@@ -76,4 +76,69 @@ RSpec.describe 'api/owner/cards/{card_uuid}/tags', type: :request do
       end
     end
   end
+
+  path '/api/owner/cards/{card_uuid}/tags/{slug}' do
+    parameter name: :card_uuid, in: :path, type: :string
+    parameter name: :slug, in: :path, type: :string
+
+    delete 'Detaches a tag from a card' do
+      tags 'Owner Card Tags'
+      produces 'application/json'
+      parameter name: :Authorization, in: :header, type: :string, required: true
+
+      before do
+        allow_any_instance_of(Api::Owner::CardTagsController)
+          .to receive(:owner_token).and_return('valid-token')
+      end
+
+      let!(:card) { Card.create!(name: '打', pinyin: 'dǎ') }
+      let!(:verbs) { Tag.create!(name: '動詞', slug: 'verbs') }
+
+      response '204', 'tag detached' do
+        before { card.tags << verbs }
+
+        let(:Authorization) { 'Bearer valid-token' }
+        let(:card_uuid) { card.uuid }
+        let(:slug) { 'verbs' }
+
+        run_test! do
+          expect(card.reload.tags).to be_empty
+        end
+      end
+
+      response '204', 'tag not attached (idempotent)' do
+        let(:Authorization) { 'Bearer valid-token' }
+        let(:card_uuid) { card.uuid }
+        let(:slug) { 'verbs' }
+
+        run_test!
+      end
+
+      response '204', 'unknown tag slug (idempotent)' do
+        let(:Authorization) { 'Bearer valid-token' }
+        let(:card_uuid) { card.uuid }
+        let(:slug) { 'nonexistent' }
+
+        run_test!
+      end
+
+      response '404', 'card not found' do
+        let(:Authorization) { 'Bearer valid-token' }
+        let(:card_uuid) { 'nonexistent-uuid' }
+        let(:slug) { 'verbs' }
+
+        run_test!
+      end
+
+      response '401', 'unauthorized' do
+        schema '$ref' => '#/components/schemas/Errors'
+
+        let(:Authorization) { 'Bearer wrong-token' }
+        let(:card_uuid) { card.uuid }
+        let(:slug) { 'verbs' }
+
+        run_test!
+      end
+    end
+  end
 end

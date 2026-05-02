@@ -18,6 +18,13 @@ module Api
         end
       end
 
+      def destroy
+        card = Card.find_by!(uuid: params[:card_uuid])
+        tag = Tag.find_by(slug: params[:slug])
+        card.tags.delete(tag) if tag
+        head :no_content
+      end
+
       private
 
       def serialize(card)
