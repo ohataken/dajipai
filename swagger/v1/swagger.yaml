@@ -108,6 +108,41 @@ paths:
           application/json:
             schema:
               "$ref": "#/components/schemas/CardInput"
+  "/api/owner/tags":
+    post:
+      summary: Creates a tag
+      tags:
+      - Owner Tags
+      parameters:
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      responses:
+        '201':
+          description: tag created
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/OwnerTag"
+        '422':
+          description: invalid request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Errors"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Errors"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/TagInput"
   "/api/tags":
     get:
       summary: Lists tags
@@ -176,6 +211,27 @@ components:
       - pinyin
       - created_at
       - updated_at
+    OwnerTag:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        slug:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+      required:
+      - id
+      - name
+      - slug
+      - created_at
+      - updated_at
     CardInput:
       type: object
       properties:
@@ -191,6 +247,21 @@ components:
           - pinyin
       required:
       - card
+    TagInput:
+      type: object
+      properties:
+        tag:
+          type: object
+          properties:
+            name:
+              type: string
+            slug:
+              type: string
+          required:
+          - name
+          - slug
+      required:
+      - tag
     Errors:
       type: object
       properties:
