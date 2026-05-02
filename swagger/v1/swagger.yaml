@@ -73,6 +73,55 @@ paths:
           application/json:
             schema:
               "$ref": "#/components/schemas/CardInput"
+  "/api/owner/cards/{card_uuid}/tags":
+    parameters:
+    - name: card_uuid
+      in: path
+      required: true
+      schema:
+        type: string
+    post:
+      summary: Attaches a tag to a card
+      tags:
+      - Owner Card Tags
+      parameters:
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      responses:
+        '201':
+          description: tag attached
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Card"
+        '200':
+          description: tag already attached (idempotent)
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Card"
+        '422':
+          description: tag not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Errors"
+        '404':
+          description: card not found
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Errors"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/CardTagInput"
   "/api/owner/cards":
     post:
       summary: Creates a card
@@ -289,6 +338,13 @@ components:
           - slug
       required:
       - tag
+    CardTagInput:
+      type: object
+      properties:
+        tag_slug:
+          type: string
+      required:
+      - tag_slug
     Errors:
       type: object
       properties:
