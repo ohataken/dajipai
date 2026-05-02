@@ -10,7 +10,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_05_02_043811) do
+ActiveRecord::Schema[8.1].define(version: 2026_05_02_044905) do
+  create_table "card_tags", force: :cascade do |t|
+    t.integer "card_id", null: false
+    t.datetime "created_at", null: false
+    t.integer "tag_id", null: false
+    t.datetime "updated_at", null: false
+    t.index ["card_id", "tag_id"], name: "index_card_tags_on_card_id_and_tag_id", unique: true
+    t.index ["card_id"], name: "index_card_tags_on_card_id"
+    t.index ["tag_id"], name: "index_card_tags_on_tag_id"
+  end
+
   create_table "cards", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.string "name", null: false
@@ -28,4 +38,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_02_043811) do
     t.index ["name"], name: "index_tags_on_name", unique: true
     t.index ["slug"], name: "index_tags_on_slug", unique: true
   end
+
+  add_foreign_key "card_tags", "cards"
+  add_foreign_key "card_tags", "tags"
 end
