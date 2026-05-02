@@ -7,7 +7,9 @@ Rails.application.routes.draw do
 
   namespace :api do
     resources :cards, only: [ :index, :create, :update ], param: :uuid
-    resources :tags, only: [ :index ], param: :slug
+    resources :tags, only: [ :index ], param: :slug do
+      resources :cards, only: [ :index ], controller: "tags/cards"
+    end
 
     namespace :owner do
       resources :cards, only: [ :create ]

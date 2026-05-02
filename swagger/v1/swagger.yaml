@@ -143,6 +143,28 @@ paths:
           application/json:
             schema:
               "$ref": "#/components/schemas/TagInput"
+  "/api/tags/{tag_slug}/cards":
+    parameters:
+    - name: tag_slug
+      in: path
+      required: true
+      schema:
+        type: string
+    get:
+      summary: Lists cards belonging to a tag
+      tags:
+      - Tags
+      responses:
+        '200':
+          description: cards listed
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/Card"
+        '404':
+          description: tag not found
   "/api/tags":
     get:
       summary: Lists tags
