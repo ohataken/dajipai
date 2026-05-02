@@ -11,6 +11,7 @@ Rails.application.routes.draw do
 
     namespace :owner do
       resources :cards, only: [ :create ]
+      resources :tags, only: [ :create ]
     end
   end
 
