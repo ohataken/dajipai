@@ -43,6 +43,14 @@ RSpec.configure do |config|
             },
             required: %w[uuid name pinyin]
           },
+          Tag: {
+            type: :object,
+            properties: {
+              slug: { type: :string },
+              name: { type: :string }
+            },
+            required: %w[slug name]
+          },
           OwnerCard: {
             type: :object,
             properties: {
