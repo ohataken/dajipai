@@ -108,6 +108,20 @@ paths:
           application/json:
             schema:
               "$ref": "#/components/schemas/CardInput"
+  "/api/tags":
+    get:
+      summary: Lists tags
+      tags:
+      - Tags
+      responses:
+        '200':
+          description: tags listed
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/Tag"
 servers:
 - url: https://{defaultHost}
   variables:
@@ -128,6 +142,16 @@ components:
       - uuid
       - name
       - pinyin
+    Tag:
+      type: object
+      properties:
+        slug:
+          type: string
+        name:
+          type: string
+      required:
+      - slug
+      - name
     OwnerCard:
       type: object
       properties:
