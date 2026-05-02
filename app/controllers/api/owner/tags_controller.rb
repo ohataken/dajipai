@@ -1,8 +1,6 @@
 module Api
   module Owner
-    class TagsController < ApplicationController
-      before_action :authenticate_owner!
-
+    class TagsController < Api::OwnerController
       def create
         tag = Tag.new(tag_params)
 
@@ -14,19 +12,6 @@ module Api
       end
 
       private
-
-      def authenticate_owner!
-        provided = request.authorization.to_s.sub(/\ABearer /, "")
-        expected = owner_token
-
-        unless expected.present? && ActiveSupport::SecurityUtils.secure_compare(provided, expected)
-          render json: { errors: [ "Unauthorized" ] }, status: :unauthorized
-        end
-      end
-
-      def owner_token
-        ENV.fetch("OWNER_TOKEN", "")
-      end
 
       def tag_params
         params.expect(tag: [ :name, :slug ])
