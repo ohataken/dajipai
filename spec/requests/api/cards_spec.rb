@@ -42,4 +42,34 @@ RSpec.describe 'api/cards', type: :request do
       end
     end
   end
+
+  path '/api/cards/{uuid}' do
+    parameter name: :uuid, in: :path, type: :string
+
+    get 'Shows a card' do
+      tags 'Cards'
+      produces 'application/json'
+
+      let(:existing_card) do
+        card = Card.create!(name: '打', pinyin: 'dǎ')
+        card.tags << Tag.create!(name: '動詞', slug: 'verbs')
+        card
+      end
+
+      response '200', 'card found' do
+        schema '$ref' => '#/components/schemas/Card'
+
+        let(:uuid) { existing_card.uuid }
+        run_test! do |response|
+          body = JSON.parse(response.body)
+          expect(body['tags']).to eq([ { 'slug' => 'verbs', 'name' => '動詞' } ])
+        end
+      end
+
+      response '404', 'card not found' do
+        let(:uuid) { 'non-existent-uuid' }
+        run_test!
+      end
+    end
+  end
 end

@@ -5,6 +5,11 @@ module Api
       render json: cards.map { |card| serialize(card) }
     end
 
+    def show
+      card = Card.includes(:tags).find_by!(uuid: params[:uuid])
+      render json: serialize(card)
+    end
+
     def create
       card = Card.new(card_params)
 
