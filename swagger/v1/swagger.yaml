@@ -41,6 +41,26 @@ paths:
           application/json:
             schema:
               "$ref": "#/components/schemas/CardInput"
+  "/api/cards/{uuid}":
+    parameters:
+    - name: uuid
+      in: path
+      required: true
+      schema:
+        type: string
+    get:
+      summary: Shows a card
+      tags:
+      - Cards
+      responses:
+        '200':
+          description: card found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Card"
+        '404':
+          description: card not found
   "/api/owner/cards/{card_uuid}/tags":
     parameters:
     - name: card_uuid
