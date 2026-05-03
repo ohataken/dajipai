@@ -39,4 +39,57 @@ RSpec.describe 'api/owner/cards', type: :request do
       end
     end
   end
+
+  path '/api/owner/cards/{uuid}' do
+    parameter name: :uuid, in: :path, type: :string
+
+    put 'Updates a card' do
+      tags 'Owner Cards'
+      consumes 'application/json'
+      produces 'application/json'
+      parameter name: :Authorization, in: :header, type: :string, required: true
+      parameter name: :card, in: :body, schema: { '$ref' => '#/components/schemas/CardInput' }
+
+      before do
+        allow_any_instance_of(Api::Owner::CardsController)
+          .to receive(:owner_token).and_return('valid-token')
+      end
+
+      let(:existing_card) { Card.create!(name: '打', pinyin: 'dǎ') }
+
+      response '200', 'card updated' do
+        schema '$ref' => '#/components/schemas/OwnerCard'
+
+        let(:Authorization) { 'Bearer valid-token' }
+        let(:uuid) { existing_card.uuid }
+        let(:card) { { card: { name: '吃', pinyin: 'chī' } } }
+        run_test!
+      end
+
+      response '404', 'card not found' do
+        let(:Authorization) { 'Bearer valid-token' }
+        let(:uuid) { 'non-existent-uuid' }
+        let(:card) { { card: { name: '吃', pinyin: 'chī' } } }
+        run_test!
+      end
+
+      response '422', 'invalid request' do
+        schema '$ref' => '#/components/schemas/Errors'
+
+        let(:Authorization) { 'Bearer valid-token' }
+        let(:uuid) { existing_card.uuid }
+        let(:card) { { card: { name: '', pinyin: '' } } }
+        run_test!
+      end
+
+      response '401', 'unauthorized' do
+        schema '$ref' => '#/components/schemas/Errors'
+
+        let(:Authorization) { 'Bearer wrong-token' }
+        let(:uuid) { existing_card.uuid }
+        let(:card) { { card: { name: '吃', pinyin: 'chī' } } }
+        run_test!
+      end
+    end
+  end
 end
