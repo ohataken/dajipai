@@ -44,6 +44,13 @@ RSpec.configure do |config|
             },
             required: %w[uuid name pinyin tags]
           },
+          CardDescription: {
+            type: :object,
+            properties: {
+              content: { type: :string }
+            },
+            required: %w[content]
+          },
           Tag: {
             type: :object,
             properties: {
@@ -88,6 +95,19 @@ RSpec.configure do |config|
               }
             },
             required: %w[card]
+          },
+          CardDescriptionInput: {
+            type: :object,
+            properties: {
+              card_description: {
+                type: :object,
+                properties: {
+                  content: { type: :string }
+                },
+                required: %w[content]
+              }
+            },
+            required: %w[card_description]
           },
           TagInput: {
             type: :object,
