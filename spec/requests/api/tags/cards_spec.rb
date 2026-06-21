@@ -18,6 +18,7 @@ RSpec.describe 'api/tags/{tag_slug}/cards', type: :request do
           greetings = Tag.create!(name: '挨拶', slug: 'greetings')
           tagged = Card.create!(name: '打', pinyin: 'dǎ')
           tagged.tags << verbs
+          CardDescription.create!(card: tagged, content: 'to hit')
           Card.create!(name: '你好', pinyin: 'nǐ hǎo').tags << greetings
         end
 
@@ -25,6 +26,7 @@ RSpec.describe 'api/tags/{tag_slug}/cards', type: :request do
           body = JSON.parse(response.body)
           expect(body.map { |c| c['name'] }).to contain_exactly('打')
           expect(body.first['tags']).to eq([ { 'slug' => 'verbs', 'name' => '動詞' } ])
+          expect(body.first['card_description']).to eq({ 'content' => 'to hit' })
         end
       end
 
