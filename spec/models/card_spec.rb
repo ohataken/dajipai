@@ -1,12 +1,12 @@
 require 'rails_helper'
 
-RSpec.describe CardDescription, type: :model do
+RSpec.describe Card, type: :model do
   describe 'associations' do
-    it 'belongs to a card' do
+    it 'has one card description' do
       card = Card.create!(name: '打', pinyin: 'dǎ')
       description = CardDescription.create!(card: card, content: 'to hit')
 
-      expect(description.card).to eq(card)
+      expect(card.card_description).to eq(description)
     end
   end
 end

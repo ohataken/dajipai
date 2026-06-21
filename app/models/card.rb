@@ -3,6 +3,7 @@ class Card < ApplicationRecord
 
   has_many :card_tags, dependent: :destroy
   has_many :tags, through: :card_tags
+  has_one :card_description, dependent: :destroy
 
   validates :name, presence: true
   validates :pinyin, presence: true
