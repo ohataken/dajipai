@@ -40,9 +40,17 @@ RSpec.configure do |config|
               uuid: { type: :string },
               name: { type: :string },
               pinyin: { type: :string },
-              tags: { type: :array, items: { '$ref' => '#/components/schemas/Tag' } }
+              tags: { type: :array, items: { '$ref' => '#/components/schemas/Tag' } },
+              card_description: {
+                type: :object,
+                nullable: true,
+                properties: {
+                  content: { type: :string }
+                },
+                required: %w[content]
+              }
             },
-            required: %w[uuid name pinyin tags]
+            required: %w[uuid name pinyin tags card_description]
           },
           CardDescription: {
             type: :object,

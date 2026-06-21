@@ -12,11 +12,13 @@ RSpec.describe 'api/cards', type: :request do
         before do
           card = Card.create!(name: '打', pinyin: 'dǎ')
           card.tags << Tag.create!(name: '動詞', slug: 'verbs')
+          CardDescription.create!(card: card, content: 'to hit')
         end
 
         run_test! do |response|
           body = JSON.parse(response.body)
           expect(body.first['tags']).to eq([ { 'slug' => 'verbs', 'name' => '動詞' } ])
+          expect(body.first['card_description']).to eq({ 'content' => 'to hit' })
         end
       end
     end

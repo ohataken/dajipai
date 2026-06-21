@@ -1,7 +1,7 @@
 module Api
   class CardsController < ApplicationController
     def index
-      cards = Card.includes(:tags).all
+      cards = Card.includes(:tags, :card_description).all
       render json: cards.map { |card| serialize(card) }
     end
 
@@ -31,7 +31,8 @@ module Api
         uuid: card.uuid,
         name: card.name,
         pinyin: card.pinyin,
-        tags: card.tags.sort_by(&:slug).map { |tag| { slug: tag.slug, name: tag.name } }
+        tags: card.tags.sort_by(&:slug).map { |tag| { slug: tag.slug, name: tag.name } },
+        card_description: card.card_description && { content: card.card_description.content }
       }
     end
   end
