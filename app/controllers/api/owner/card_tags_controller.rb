@@ -1,6 +1,8 @@
 module Api
   module Owner
     class CardTagsController < Api::OwnerController
+      include CardSerializable
+
       def create
         card = Card.find_by!(uuid: params[:card_uuid])
         tag = Tag.find_by(slug: params[:tag_slug])
@@ -11,10 +13,10 @@ module Api
         end
 
         if card.tags.include?(tag)
-          render json: serialize(card), status: :ok
+          render json: serialize_card(card), status: :ok
         else
           card.tags << tag
-          render json: serialize(card), status: :created
+          render json: serialize_card(card), status: :created
         end
       end
 
@@ -23,17 +25,6 @@ module Api
         tag = Tag.find_by(slug: params[:slug])
         card.tags.delete(tag) if tag
         head :no_content
-      end
-
-      private
-
-      def serialize(card)
-        {
-          uuid: card.uuid,
-          name: card.name,
-          pinyin: card.pinyin,
-          tags: card.tags.sort_by(&:slug).map { |tag| { slug: tag.slug, name: tag.name } }
-        }
       end
     end
   end

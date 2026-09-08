@@ -1,22 +1,12 @@
 module Api
   module Tags
     class CardsController < ApplicationController
+      include CardSerializable
+
       def index
         tag = Tag.find_by!(slug: params[:tag_slug])
-        cards = tag.cards.includes(:tags, :card_description)
-        render json: cards.map { |card| serialize(card) }
-      end
-
-      private
-
-      def serialize(card)
-        {
-          uuid: card.uuid,
-          name: card.name,
-          pinyin: card.pinyin,
-          tags: card.tags.sort_by(&:slug).map { |tag| { slug: tag.slug, name: tag.name } },
-          card_description: card.card_description && { content: card.card_description.content }
-        }
+        cards = tag.cards.published.includes(:tags, :card_description)
+        render json: cards.map { |card| serialize_card(card) }
       end
     end
   end

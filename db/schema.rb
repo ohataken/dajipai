@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_06_21_054132) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_08_230552) do
   create_table "card_descriptions", force: :cascade do |t|
     t.integer "card_id", null: false
     t.string "content"
@@ -33,8 +33,10 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_21_054132) do
     t.datetime "created_at", null: false
     t.string "name", null: false
     t.string "pinyin", null: false
+    t.string "status", default: "draft", null: false
     t.datetime "updated_at", null: false
     t.string "uuid", null: false
+    t.index ["status"], name: "index_cards_on_status"
     t.index ["uuid"], name: "index_cards_on_uuid", unique: true
   end
 

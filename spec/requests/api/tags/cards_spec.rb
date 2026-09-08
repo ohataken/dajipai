@@ -4,7 +4,7 @@ RSpec.describe 'api/tags/{tag_slug}/cards', type: :request do
   path '/api/tags/{tag_slug}/cards' do
     parameter name: :tag_slug, in: :path, type: :string
 
-    get 'Lists cards belonging to a tag' do
+    get 'Lists published cards belonging to a tag' do
       tags 'Tags'
       produces 'application/json'
 
@@ -16,10 +16,11 @@ RSpec.describe 'api/tags/{tag_slug}/cards', type: :request do
         before do
           verbs = Tag.create!(name: '動詞', slug: 'verbs')
           greetings = Tag.create!(name: '挨拶', slug: 'greetings')
-          tagged = Card.create!(name: '打', pinyin: 'dǎ')
+          tagged = Card.create!(name: '打', pinyin: 'dǎ', status: :published)
           tagged.tags << verbs
           CardDescription.create!(card: tagged, content: 'to hit')
-          Card.create!(name: '你好', pinyin: 'nǐ hǎo').tags << greetings
+          Card.create!(name: '吃', pinyin: 'chī', status: :draft).tags << verbs
+          Card.create!(name: '你好', pinyin: 'nǐ hǎo', status: :published).tags << greetings
         end
 
         run_test! do |response|
