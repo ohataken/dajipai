@@ -45,4 +45,19 @@ RSpec.describe Card, type: :model do
       expect(Card.new.pinyin).to eq('')
     end
   end
+
+  describe 'pinyin validation' do
+    it 'allows empty pinyin on a draft card' do
+      expect(Card.create!(name: '打', pinyin: '')).to be_persisted
+    end
+
+    it 'rejects nil pinyin on a draft card' do
+      expect(Card.new(name: '打', pinyin: nil)).not_to be_valid
+    end
+
+    it 'requires pinyin on a published card' do
+      expect(Card.new(name: '打', pinyin: '', published_at: 1.day.ago)).not_to be_valid
+      expect(Card.new(name: '打', pinyin: nil, published_at: 1.day.ago)).not_to be_valid
+    end
+  end
 end
