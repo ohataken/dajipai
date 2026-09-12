@@ -380,11 +380,20 @@ components:
           type: array
           items:
             "$ref": "#/components/schemas/Tag"
+        card_description:
+          type: object
+          nullable: true
+          properties:
+            content:
+              type: string
+          required:
+          - content
       required:
       - uuid
       - name
       - pinyin
       - tags
+      - card_description
     CardDescription:
       type: object
       properties:
