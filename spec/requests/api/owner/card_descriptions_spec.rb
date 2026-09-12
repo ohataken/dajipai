@@ -103,5 +103,61 @@ RSpec.describe 'api/owner/cards/{card_uuid}/card_description', type: :request do
         run_test!
       end
     end
+
+    put 'Updates a card description' do
+      tags 'Owner Card Descriptions'
+      consumes 'application/json'
+      produces 'application/json'
+      parameter name: :Authorization, in: :header, type: :string, required: true
+      parameter name: :card_description, in: :body, schema: { '$ref' => '#/components/schemas/CardDescriptionInput' }
+
+      before do
+        allow_any_instance_of(Api::Owner::CardDescriptionsController)
+          .to receive(:owner_token).and_return('valid-token')
+      end
+
+      let(:existing_card) do
+        card = Card.create!(name: '喝')
+        CardDescription.create!(card: card, content: 'to drink')
+        card
+      end
+
+      response '200', 'card description updated' do
+        schema '$ref' => '#/components/schemas/OwnerCardDescription'
+
+        let(:Authorization) { 'Bearer valid-token' }
+        let(:card_uuid) { existing_card.uuid }
+        let(:card_description) { { card_description: { content: 'to swallow' } } }
+
+        run_test! do
+          expect(existing_card.reload.card_description.content).to eq('to swallow')
+        end
+      end
+
+      response '422', 'invalid request' do
+        schema '$ref' => '#/components/schemas/Errors'
+
+        let(:Authorization) { 'Bearer valid-token' }
+        let(:card_uuid) { existing_card.uuid }
+        let(:card_description) { { card_description: { content: '' } } }
+        run_test!
+      end
+
+      response '404', 'card description not found' do
+        let(:Authorization) { 'Bearer valid-token' }
+        let(:card_uuid) { Card.create!(name: '吃').uuid }
+        let(:card_description) { { card_description: { content: 'to eat' } } }
+        run_test!
+      end
+
+      response '401', 'unauthorized' do
+        schema '$ref' => '#/components/schemas/Errors'
+
+        let(:Authorization) { 'Bearer wrong-token' }
+        let(:card_uuid) { existing_card.uuid }
+        let(:card_description) { { card_description: { content: 'to swallow' } } }
+        run_test!
+      end
+    end
   end
 end
