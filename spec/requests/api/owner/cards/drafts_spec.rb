@@ -13,19 +13,20 @@ RSpec.describe 'api/owner/cards/drafts', type: :request do
       end
 
       response '200', 'draft cards listed' do
-        schema type: :array, items: { '$ref' => '#/components/schemas/OwnerCard' }
+        schema type: :array, items: { '$ref' => '#/components/schemas/OwnerDraftCard' }
 
         let(:Authorization) { 'Bearer valid-token' }
 
         before do
           Card.create!(name: '打', pinyin: 'dǎ', published_at: 1.day.ago)
           Card.create!(name: '吃', pinyin: 'chī', published_at: 1.day.from_now)
-          Card.create!(name: '喝')
+          Card.create!(name: '喝').tags << Tag.create!(name: '動詞', slug: 'verbs')
         end
 
         run_test! do |response|
           body = JSON.parse(response.body)
           expect(body.map { |c| c['name'] }).to contain_exactly('喝')
+          expect(body.first['tags']).to eq([ { 'slug' => 'verbs', 'name' => '動詞' } ])
         end
       end
 

@@ -3,7 +3,7 @@ module Api
     module Cards
       class DraftsController < Api::OwnerController
         def index
-          cards = Card.draft
+          cards = Card.draft.includes(:tags)
           render json: cards.map { |card| serialize(card) }
         end
 
@@ -21,6 +21,7 @@ module Api
             name: card.name,
             pinyin: card.pinyin,
             published_at: card.published_at,
+            tags: card.tags.sort_by(&:slug).map { |tag| { slug: tag.slug, name: tag.name } },
             created_at: card.created_at,
             updated_at: card.updated_at
           }
