@@ -105,6 +105,21 @@ RSpec.configure do |config|
             },
             required: %w[card]
           },
+          OwnerCardInput: {
+            type: :object,
+            properties: {
+              card: {
+                type: :object,
+                properties: {
+                  name: { type: :string },
+                  pinyin: { type: :string },
+                  published_at: { type: :string, format: 'date-time', nullable: true }
+                },
+                required: %w[name pinyin]
+              }
+            },
+            required: %w[card]
+          },
           CardDescriptionInput: {
             type: :object,
             properties: {

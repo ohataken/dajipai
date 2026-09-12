@@ -24,7 +24,7 @@ module Api
       private
 
       def card_params
-        params.expect(card: [ :name, :pinyin ])
+        params.expect(card: [ :name, :pinyin, :published_at ])
       end
 
       def serialize(card)
