@@ -4,6 +4,74 @@ info:
   title: API V1
   version: v1
 paths:
+  "/api/cards/{card_uuid}/card_description":
+    parameters:
+    - name: card_uuid
+      in: path
+      required: true
+      schema:
+        type: string
+    get:
+      summary: Shows a card description
+      tags:
+      - Card Descriptions
+      responses:
+        '200':
+          description: card description found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/CardDescription"
+        '404':
+          description: card description not found
+    post:
+      summary: Creates a card description
+      tags:
+      - Card Descriptions
+      parameters: []
+      responses:
+        '201':
+          description: card description created
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/CardDescription"
+        '422':
+          description: invalid request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Errors"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/CardDescriptionInput"
+    put:
+      summary: Updates a card description
+      tags:
+      - Card Descriptions
+      parameters: []
+      responses:
+        '200':
+          description: card description updated
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/CardDescription"
+        '404':
+          description: card description not found
+        '422':
+          description: invalid request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Errors"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/CardDescriptionInput"
   "/api/cards":
     get:
       summary: Lists cards
@@ -60,7 +128,7 @@ paths:
               schema:
                 "$ref": "#/components/schemas/Card"
         '404':
-          description: card not found
+          description: card is draft
   "/api/owner/cards/{card_uuid}/tags":
     parameters:
     - name: card_uuid
@@ -143,6 +211,32 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/Errors"
+  "/api/owner/cards/drafts":
+    get:
+      summary: Lists draft cards
+      tags:
+      - Owner Cards
+      parameters:
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: draft cards listed
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/OwnerCard"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Errors"
   "/api/owner/cards":
     post:
       summary: Creates a card
@@ -156,13 +250,13 @@ paths:
           type: string
       responses:
         '201':
-          description: card created
+          description: draft card created without pinyin
           content:
             application/json:
               schema:
                 "$ref": "#/components/schemas/OwnerCard"
         '422':
-          description: invalid request
+          description: published card without pinyin
           content:
             application/json:
               schema:
@@ -177,7 +271,7 @@ paths:
         content:
           application/json:
             schema:
-              "$ref": "#/components/schemas/CardInput"
+              "$ref": "#/components/schemas/OwnerCardInput"
   "/api/owner/cards/{uuid}":
     parameters:
     - name: uuid
@@ -197,7 +291,7 @@ paths:
           type: string
       responses:
         '200':
-          description: card updated
+          description: card unpublished
           content:
             application/json:
               schema:
@@ -220,7 +314,7 @@ paths:
         content:
           application/json:
             schema:
-              "$ref": "#/components/schemas/CardInput"
+              "$ref": "#/components/schemas/OwnerCardInput"
   "/api/owner/tags":
     post:
       summary: Creates a tag
@@ -312,11 +406,27 @@ components:
           type: array
           items:
             "$ref": "#/components/schemas/Tag"
+        card_description:
+          type: object
+          nullable: true
+          properties:
+            content:
+              type: string
+          required:
+          - content
       required:
       - uuid
       - name
       - pinyin
       - tags
+      - card_description
+    CardDescription:
+      type: object
+      properties:
+        content:
+          type: string
+      required:
+      - content
     Tag:
       type: object
       properties:
@@ -338,6 +448,10 @@ components:
           type: string
         pinyin:
           type: string
+        published_at:
+          type: string
+          format: date-time
+          nullable: true
         created_at:
           type: string
           format: date-time
@@ -349,6 +463,7 @@ components:
       - uuid
       - name
       - pinyin
+      - published_at
       - created_at
       - updated_at
     OwnerTag:
@@ -387,6 +502,36 @@ components:
           - pinyin
       required:
       - card
+    OwnerCardInput:
+      type: object
+      properties:
+        card:
+          type: object
+          properties:
+            name:
+              type: string
+            pinyin:
+              type: string
+            published_at:
+              type: string
+              format: date-time
+              nullable: true
+          required:
+          - name
+      required:
+      - card
+    CardDescriptionInput:
+      type: object
+      properties:
+        card_description:
+          type: object
+          properties:
+            content:
+              type: string
+          required:
+          - content
+      required:
+      - card_description
     TagInput:
       type: object
       properties:
