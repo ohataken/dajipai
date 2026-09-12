@@ -422,6 +422,10 @@ components:
           type: string
         pinyin:
           type: string
+        published_at:
+          type: string
+          format: date-time
+          nullable: true
         created_at:
           type: string
           format: date-time
@@ -433,6 +437,7 @@ components:
       - uuid
       - name
       - pinyin
+      - published_at
       - created_at
       - updated_at
     OwnerTag:
