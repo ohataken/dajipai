@@ -129,6 +129,38 @@ paths:
                 "$ref": "#/components/schemas/Card"
         '404':
           description: card is draft
+  "/api/owner/cards/{card_uuid}/card_description":
+    parameters:
+    - name: card_uuid
+      in: path
+      required: true
+      schema:
+        type: string
+    get:
+      summary: Shows a card description
+      tags:
+      - Owner Card Descriptions
+      parameters:
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: card description found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/OwnerCardDescription"
+        '404':
+          description: card description not found
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Errors"
   "/api/owner/cards/{card_uuid}/tags":
     parameters:
     - name: card_uuid
@@ -496,6 +528,24 @@ components:
       - name
       - pinyin
       - published_at
+      - created_at
+      - updated_at
+    OwnerCardDescription:
+      type: object
+      properties:
+        id:
+          type: integer
+        content:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+      required:
+      - id
+      - content
       - created_at
       - updated_at
     OwnerTag:
