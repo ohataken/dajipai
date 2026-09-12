@@ -224,13 +224,13 @@ paths:
           type: string
       responses:
         '201':
-          description: draft card created
+          description: draft card created without pinyin
           content:
             application/json:
               schema:
                 "$ref": "#/components/schemas/OwnerCard"
         '422':
-          description: invalid request
+          description: published card without pinyin
           content:
             application/json:
               schema:
@@ -492,7 +492,6 @@ components:
               nullable: true
           required:
           - name
-          - pinyin
       required:
       - card
     CardDescriptionInput:
