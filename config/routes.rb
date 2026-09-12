@@ -19,7 +19,7 @@ Rails.application.routes.draw do
       end
       resources :cards, only: [ :create, :update ], param: :uuid do
         resources :card_tags, only: [ :create, :destroy ], param: :slug, path: "tags"
-        resource :card_description, only: [ :show, :create ]
+        resource :card_description, only: [ :show, :create, :update ]
       end
       resources :tags, only: [ :create ]
     end

@@ -16,6 +16,16 @@ module Api
         end
       end
 
+      def update
+        card_description = find_card_description!
+
+        if card_description.update(card_description_params)
+          render json: serialize(card_description)
+        else
+          render json: { errors: card_description.errors.full_messages }, status: :unprocessable_entity
+        end
+      end
+
       private
 
       def card
