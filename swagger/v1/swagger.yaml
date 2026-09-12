@@ -197,6 +197,42 @@ paths:
           application/json:
             schema:
               "$ref": "#/components/schemas/CardDescriptionInput"
+    put:
+      summary: Updates a card description
+      tags:
+      - Owner Card Descriptions
+      parameters:
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: card description updated
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/OwnerCardDescription"
+        '422':
+          description: invalid request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Errors"
+        '404':
+          description: card description not found
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Errors"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/CardDescriptionInput"
   "/api/owner/cards/{card_uuid}/tags":
     parameters:
     - name: card_uuid
