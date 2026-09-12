@@ -7,6 +7,11 @@ module Api
           render json: cards.map { |card| serialize(card) }
         end
 
+        def show
+          card = Card.draft.find_by!(uuid: params[:uuid])
+          render json: serialize(card)
+        end
+
         private
 
         def serialize(card)
