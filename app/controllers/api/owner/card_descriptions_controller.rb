@@ -5,6 +5,9 @@ module Api
         render json: serialize(find_card_description!)
       end
 
+      def create
+      end
+
       private
 
       def card
