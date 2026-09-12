@@ -29,4 +29,14 @@ RSpec.describe Card, type: :model do
       expect(Card.draft).to contain_exactly(draft)
     end
   end
+
+  describe '#draft?' do
+    it 'returns true when published_at is nil' do
+      expect(Card.new(published_at: nil)).to be_draft
+    end
+
+    it 'returns false when published_at is set' do
+      expect(Card.new(published_at: 1.day.ago)).not_to be_draft
+    end
+  end
 end

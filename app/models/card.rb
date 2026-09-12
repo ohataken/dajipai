@@ -12,6 +12,10 @@ class Card < ApplicationRecord
   validates :pinyin, presence: true
   validates :uuid, presence: true, uniqueness: true
 
+  def draft?
+    published_at.nil?
+  end
+
   private
 
   def fill_uuid
