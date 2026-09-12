@@ -39,4 +39,10 @@ RSpec.describe Card, type: :model do
       expect(Card.new(published_at: 1.day.ago)).not_to be_draft
     end
   end
+
+  describe '#pinyin' do
+    it 'defaults to empty string' do
+      expect(Card.new.pinyin).to eq('')
+    end
+  end
 end

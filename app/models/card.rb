@@ -5,6 +5,8 @@ class Card < ApplicationRecord
   has_many :tags, through: :card_tags
   has_one :card_description, dependent: :destroy
 
+  attribute :pinyin, :string, default: ""
+
   scope :published, -> { where(published_at: ..Time.current) }
   scope :draft, -> { where(published_at: nil) }
 
