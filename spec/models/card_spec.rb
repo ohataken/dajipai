@@ -29,4 +29,35 @@ RSpec.describe Card, type: :model do
       expect(Card.draft).to contain_exactly(draft)
     end
   end
+
+  describe '#draft?' do
+    it 'returns true when published_at is nil' do
+      expect(Card.new(published_at: nil)).to be_draft
+    end
+
+    it 'returns false when published_at is set' do
+      expect(Card.new(published_at: 1.day.ago)).not_to be_draft
+    end
+  end
+
+  describe '#pinyin' do
+    it 'defaults to empty string' do
+      expect(Card.new.pinyin).to eq('')
+    end
+  end
+
+  describe 'pinyin validation' do
+    it 'allows empty pinyin on a draft card' do
+      expect(Card.create!(name: '打', pinyin: '')).to be_persisted
+    end
+
+    it 'rejects nil pinyin on a draft card' do
+      expect(Card.new(name: '打', pinyin: nil)).not_to be_valid
+    end
+
+    it 'requires pinyin on a published card' do
+      expect(Card.new(name: '打', pinyin: '', published_at: 1.day.ago)).not_to be_valid
+      expect(Card.new(name: '打', pinyin: nil, published_at: 1.day.ago)).not_to be_valid
+    end
+  end
 end
