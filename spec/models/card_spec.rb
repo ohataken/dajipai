@@ -19,4 +19,14 @@ RSpec.describe Card, type: :model do
       expect(Card.published).to contain_exactly(published)
     end
   end
+
+  describe '.draft' do
+    it 'returns cards without published_at' do
+      Card.create!(name: '打', pinyin: 'dǎ', published_at: 1.day.ago)
+      Card.create!(name: '吃', pinyin: 'chī', published_at: 1.day.from_now)
+      draft = Card.create!(name: '喝', pinyin: 'hē')
+
+      expect(Card.draft).to contain_exactly(draft)
+    end
+  end
 end

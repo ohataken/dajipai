@@ -6,6 +6,7 @@ class Card < ApplicationRecord
   has_one :card_description, dependent: :destroy
 
   scope :published, -> { where(published_at: ..Time.current) }
+  scope :draft, -> { where(published_at: nil) }
 
   validates :name, presence: true
   validates :pinyin, presence: true
