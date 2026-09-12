@@ -317,6 +317,13 @@ components:
       - name
       - pinyin
       - tags
+    CardDescription:
+      type: object
+      properties:
+        content:
+          type: string
+      required:
+      - content
     Tag:
       type: object
       properties:
