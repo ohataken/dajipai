@@ -4,16 +4,6 @@ module Api
       render json: serialize(card_description_for!(card))
     end
 
-    def update
-      card_description = card_description_for!(card)
-
-      if card_description.update(card_description_params)
-        render json: serialize(card_description)
-      else
-        render json: { errors: card_description.errors.full_messages }, status: :unprocessable_entity
-      end
-    end
-
     private
 
     def card
@@ -22,10 +12,6 @@ module Api
 
     def card_description_for!(card)
       card.card_description || raise(ActiveRecord::RecordNotFound)
-    end
-
-    def card_description_params
-      params.expect(card_description: [ :content ])
     end
 
     def serialize(card_description)
