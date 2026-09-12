@@ -10,13 +10,15 @@ RSpec.describe 'api/cards', type: :request do
         schema type: :array, items: { '$ref' => '#/components/schemas/Card' }
 
         before do
-          card = Card.create!(name: '打', pinyin: 'dǎ')
+          card = Card.create!(name: '打', pinyin: 'dǎ', published_at: 1.day.ago)
           card.tags << Tag.create!(name: '動詞', slug: 'verbs')
           CardDescription.create!(card: card, content: 'to hit')
+          Card.create!(name: '喝', pinyin: 'hē')
         end
 
         run_test! do |response|
           body = JSON.parse(response.body)
+          expect(body.map { |c| c['name'] }).to contain_exactly('打')
           expect(body.first['tags']).to eq([ { 'slug' => 'verbs', 'name' => '動詞' } ])
           expect(body.first['card_description']).to eq({ 'content' => 'to hit' })
         end
@@ -53,7 +55,7 @@ RSpec.describe 'api/cards', type: :request do
       produces 'application/json'
 
       let(:existing_card) do
-        card = Card.create!(name: '打', pinyin: 'dǎ')
+        card = Card.create!(name: '打', pinyin: 'dǎ', published_at: 1.day.ago)
         card.tags << Tag.create!(name: '動詞', slug: 'verbs')
         card
       end
@@ -70,6 +72,11 @@ RSpec.describe 'api/cards', type: :request do
 
       response '404', 'card not found' do
         let(:uuid) { 'non-existent-uuid' }
+        run_test!
+      end
+
+      response '404', 'card is draft' do
+        let(:uuid) { Card.create!(name: '喝', pinyin: 'hē').uuid }
         run_test!
       end
     end

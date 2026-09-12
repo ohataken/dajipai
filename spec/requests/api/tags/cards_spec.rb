@@ -16,10 +16,11 @@ RSpec.describe 'api/tags/{tag_slug}/cards', type: :request do
         before do
           verbs = Tag.create!(name: '動詞', slug: 'verbs')
           greetings = Tag.create!(name: '挨拶', slug: 'greetings')
-          tagged = Card.create!(name: '打', pinyin: 'dǎ')
+          tagged = Card.create!(name: '打', pinyin: 'dǎ', published_at: 1.day.ago)
           tagged.tags << verbs
           CardDescription.create!(card: tagged, content: 'to hit')
-          Card.create!(name: '你好', pinyin: 'nǐ hǎo').tags << greetings
+          Card.create!(name: '喝', pinyin: 'hē').tags << verbs
+          Card.create!(name: '你好', pinyin: 'nǐ hǎo', published_at: 1.day.ago).tags << greetings
         end
 
         run_test! do |response|
