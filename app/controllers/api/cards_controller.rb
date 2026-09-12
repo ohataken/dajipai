@@ -6,7 +6,7 @@ module Api
     end
 
     def show
-      card = Card.includes(:tags).find_by!(uuid: params[:uuid])
+      card = Card.published.includes(:tags).find_by!(uuid: params[:uuid])
       render json: serialize(card)
     end
 
