@@ -24,29 +24,6 @@ paths:
                 "$ref": "#/components/schemas/CardDescription"
         '404':
           description: card description not found
-    post:
-      summary: Creates a card description
-      tags:
-      - Card Descriptions
-      parameters: []
-      responses:
-        '201':
-          description: card description created
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/CardDescription"
-        '422':
-          description: invalid request
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/Errors"
-      requestBody:
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/CardDescriptionInput"
     put:
       summary: Updates a card description
       tags:
