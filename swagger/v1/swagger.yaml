@@ -4,6 +4,26 @@ info:
   title: API V1
   version: v1
 paths:
+  "/api/cards/{card_uuid}/card_description":
+    parameters:
+    - name: card_uuid
+      in: path
+      required: true
+      schema:
+        type: string
+    get:
+      summary: Shows a card description
+      tags:
+      - Card Descriptions
+      responses:
+        '200':
+          description: card description found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/CardDescription"
+        '404':
+          description: card description not found
   "/api/cards":
     get:
       summary: Lists cards
