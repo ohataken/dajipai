@@ -37,4 +37,8 @@ RSpec.describe 'api/owner/cards/drafts', type: :request do
       end
     end
   end
+
+  path '/api/owner/cards/drafts/{uuid}' do
+    pending 'add examples for showing a draft card'
+  end
 end

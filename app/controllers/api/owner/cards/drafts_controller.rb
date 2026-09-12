@@ -7,6 +7,9 @@ module Api
           render json: cards.map { |card| serialize(card) }
         end
 
+        def show
+        end
+
         private
 
         def serialize(card)
