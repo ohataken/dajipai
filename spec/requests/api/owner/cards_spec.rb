@@ -40,11 +40,38 @@ RSpec.describe 'api/owner/cards', type: :request do
         end
       end
 
+      response '201', 'draft card created without pinyin' do
+        schema '$ref' => '#/components/schemas/OwnerCard'
+
+        let(:Authorization) { 'Bearer valid-token' }
+        let(:card) { { card: { name: '打' } } }
+
+        run_test! do |response|
+          expect(JSON.parse(response.body)['pinyin']).to eq('')
+        end
+      end
+
       response '422', 'invalid request' do
         schema '$ref' => '#/components/schemas/Errors'
 
         let(:Authorization) { 'Bearer valid-token' }
         let(:card) { { card: { name: '', pinyin: '' } } }
+        run_test!
+      end
+
+      response '422', 'draft card with null pinyin' do
+        schema '$ref' => '#/components/schemas/Errors'
+
+        let(:Authorization) { 'Bearer valid-token' }
+        let(:card) { { card: { name: '打', pinyin: nil } } }
+        run_test!
+      end
+
+      response '422', 'published card without pinyin' do
+        schema '$ref' => '#/components/schemas/Errors'
+
+        let(:Authorization) { 'Bearer valid-token' }
+        let(:card) { { card: { name: '打', pinyin: '', published_at: '2026-09-01T00:00:00Z' } } }
         run_test!
       end
 

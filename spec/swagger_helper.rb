@@ -115,7 +115,7 @@ RSpec.configure do |config|
                   pinyin: { type: :string },
                   published_at: { type: :string, format: 'date-time', nullable: true }
                 },
-                required: %w[name pinyin]
+                required: %w[name]
               }
             },
             required: %w[card]
