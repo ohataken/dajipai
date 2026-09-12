@@ -1,0 +1,21 @@
+name: Auto Assign
+
+on:
+  pull_request_target:
+    types: [ opened ]
+
+jobs:
+  assign_author:
+    if: github.event.pull_request.user.type != 'Bot'
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+
+    steps:
+      - name: Assign pull request author
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          AUTHOR: ${{ github.event.pull_request.user.login }}
+        run: gh api --method POST "repos/$REPO/issues/$PR_NUMBER/assignees" -f "assignees[]=$AUTHOR"
