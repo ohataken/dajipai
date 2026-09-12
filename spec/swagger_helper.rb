@@ -80,6 +80,16 @@ RSpec.configure do |config|
             },
             required: %w[id uuid name pinyin published_at created_at updated_at]
           },
+          OwnerCardDescription: {
+            type: :object,
+            properties: {
+              id: { type: :integer },
+              content: { type: :string },
+              created_at: { type: :string, format: 'date-time' },
+              updated_at: { type: :string, format: 'date-time' }
+            },
+            required: %w[id content created_at updated_at]
+          },
           OwnerTag: {
             type: :object,
             properties: {
