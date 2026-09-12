@@ -74,10 +74,11 @@ RSpec.configure do |config|
               uuid: { type: :string },
               name: { type: :string },
               pinyin: { type: :string },
+              published_at: { type: :string, format: 'date-time', nullable: true },
               created_at: { type: :string, format: 'date-time' },
               updated_at: { type: :string, format: 'date-time' }
             },
-            required: %w[id uuid name pinyin created_at updated_at]
+            required: %w[id uuid name pinyin published_at created_at updated_at]
           },
           OwnerTag: {
             type: :object,
@@ -98,6 +99,21 @@ RSpec.configure do |config|
                 properties: {
                   name: { type: :string },
                   pinyin: { type: :string }
+                },
+                required: %w[name pinyin]
+              }
+            },
+            required: %w[card]
+          },
+          OwnerCardInput: {
+            type: :object,
+            properties: {
+              card: {
+                type: :object,
+                properties: {
+                  name: { type: :string },
+                  pinyin: { type: :string },
+                  published_at: { type: :string, format: 'date-time', nullable: true }
                 },
                 required: %w[name pinyin]
               }

@@ -7,7 +7,7 @@ RSpec.describe 'api/owner/cards', type: :request do
       consumes 'application/json'
       produces 'application/json'
       parameter name: :Authorization, in: :header, type: :string, required: true
-      parameter name: :card, in: :body, schema: { '$ref' => '#/components/schemas/CardInput' }
+      parameter name: :card, in: :body, schema: { '$ref' => '#/components/schemas/OwnerCardInput' }
 
       before do
         allow_any_instance_of(Api::Owner::CardsController)
@@ -18,8 +18,26 @@ RSpec.describe 'api/owner/cards', type: :request do
         schema '$ref' => '#/components/schemas/OwnerCard'
 
         let(:Authorization) { 'Bearer valid-token' }
+        let(:card) { { card: { name: '打', pinyin: 'dǎ', published_at: '2026-09-01T00:00:00Z' } } }
+
+        run_test! do |response|
+          body = JSON.parse(response.body)
+          expect(Time.zone.parse(body['published_at'])).to eq(Time.zone.parse('2026-09-01T00:00:00Z'))
+          expect(Card.find_by!(uuid: body['uuid']).published_at).to eq(Time.zone.parse('2026-09-01T00:00:00Z'))
+        end
+      end
+
+      response '201', 'draft card created' do
+        schema '$ref' => '#/components/schemas/OwnerCard'
+
+        let(:Authorization) { 'Bearer valid-token' }
         let(:card) { { card: { name: '打', pinyin: 'dǎ' } } }
-        run_test!
+
+        run_test! do |response|
+          body = JSON.parse(response.body)
+          expect(body['published_at']).to be_nil
+          expect(Card.find_by!(uuid: body['uuid']).published_at).to be_nil
+        end
       end
 
       response '422', 'invalid request' do
@@ -48,7 +66,7 @@ RSpec.describe 'api/owner/cards', type: :request do
       consumes 'application/json'
       produces 'application/json'
       parameter name: :Authorization, in: :header, type: :string, required: true
-      parameter name: :card, in: :body, schema: { '$ref' => '#/components/schemas/CardInput' }
+      parameter name: :card, in: :body, schema: { '$ref' => '#/components/schemas/OwnerCardInput' }
 
       before do
         allow_any_instance_of(Api::Owner::CardsController)
@@ -62,8 +80,27 @@ RSpec.describe 'api/owner/cards', type: :request do
 
         let(:Authorization) { 'Bearer valid-token' }
         let(:uuid) { existing_card.uuid }
-        let(:card) { { card: { name: '吃', pinyin: 'chī' } } }
-        run_test!
+        let(:card) { { card: { name: '吃', pinyin: 'chī', published_at: '2026-09-01T00:00:00Z' } } }
+
+        run_test! do |response|
+          body = JSON.parse(response.body)
+          expect(Time.zone.parse(body['published_at'])).to eq(Time.zone.parse('2026-09-01T00:00:00Z'))
+          expect(existing_card.reload.published_at).to eq(Time.zone.parse('2026-09-01T00:00:00Z'))
+        end
+      end
+
+      response '200', 'card unpublished' do
+        schema '$ref' => '#/components/schemas/OwnerCard'
+
+        let(:Authorization) { 'Bearer valid-token' }
+        let(:existing_card) { Card.create!(name: '打', pinyin: 'dǎ', published_at: 1.day.ago) }
+        let(:uuid) { existing_card.uuid }
+        let(:card) { { card: { name: '打', pinyin: 'dǎ', published_at: nil } } }
+
+        run_test! do |response|
+          expect(JSON.parse(response.body)['published_at']).to be_nil
+          expect(existing_card.reload.published_at).to be_nil
+        end
       end
 
       response '404', 'card not found' do

@@ -24,7 +24,7 @@ module Api
       private
 
       def card_params
-        params.expect(card: [ :name, :pinyin ])
+        params.expect(card: [ :name, :pinyin, :published_at ])
       end
 
       def serialize(card)
@@ -33,6 +33,7 @@ module Api
           uuid: card.uuid,
           name: card.name,
           pinyin: card.pinyin,
+          published_at: card.published_at,
           created_at: card.created_at,
           updated_at: card.updated_at
         }
