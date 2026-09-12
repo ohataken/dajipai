@@ -14,6 +14,9 @@ Rails.application.routes.draw do
     end
 
     namespace :owner do
+      namespace :cards do
+        resources :drafts, only: [ :index ]
+      end
       resources :cards, only: [ :create, :update ], param: :uuid do
         resources :card_tags, only: [ :create, :destroy ], param: :slug, path: "tags"
       end
