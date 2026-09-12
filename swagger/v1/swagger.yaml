@@ -414,6 +414,18 @@ components:
           - pinyin
       required:
       - card
+    CardDescriptionInput:
+      type: object
+      properties:
+        card_description:
+          type: object
+          properties:
+            content:
+              type: string
+          required:
+          - content
+      required:
+      - card_description
     TagInput:
       type: object
       properties:
