@@ -128,7 +128,7 @@ paths:
               schema:
                 "$ref": "#/components/schemas/Card"
         '404':
-          description: card not found
+          description: card is draft
   "/api/owner/cards/{card_uuid}/tags":
     parameters:
     - name: card_uuid
