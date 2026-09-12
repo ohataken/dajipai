@@ -52,13 +52,6 @@ RSpec.configure do |config|
             },
             required: %w[uuid name pinyin tags card_description]
           },
-          CardDescription: {
-            type: :object,
-            properties: {
-              content: { type: :string }
-            },
-            required: %w[content]
-          },
           Tag: {
             type: :object,
             properties: {
