@@ -224,7 +224,7 @@ paths:
           type: string
       responses:
         '201':
-          description: card created
+          description: draft card created
           content:
             application/json:
               schema:
@@ -245,7 +245,7 @@ paths:
         content:
           application/json:
             schema:
-              "$ref": "#/components/schemas/CardInput"
+              "$ref": "#/components/schemas/OwnerCardInput"
   "/api/owner/cards/{uuid}":
     parameters:
     - name: uuid
