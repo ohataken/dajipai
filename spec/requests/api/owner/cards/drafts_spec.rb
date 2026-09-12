@@ -53,15 +53,20 @@ RSpec.describe 'api/owner/cards/drafts', type: :request do
       end
 
       response '200', 'draft card found' do
-        schema '$ref' => '#/components/schemas/OwnerCard'
+        schema '$ref' => '#/components/schemas/OwnerDraftCard'
 
         let(:Authorization) { 'Bearer valid-token' }
-        let(:uuid) { Card.create!(name: '喝').uuid }
+        let(:uuid) do
+          card = Card.create!(name: '喝')
+          card.tags << Tag.create!(name: '動詞', slug: 'verbs')
+          card.uuid
+        end
 
         run_test! do |response|
           body = JSON.parse(response.body)
           expect(body['name']).to eq('喝')
           expect(body['published_at']).to be_nil
+          expect(body['tags']).to eq([ { 'slug' => 'verbs', 'name' => '動詞' } ])
         end
       end
 
