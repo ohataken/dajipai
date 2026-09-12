@@ -1,7 +1,7 @@
 module Api
   class CardsController < ApplicationController
     def index
-      cards = Card.includes(:tags, :card_description).all
+      cards = Card.published.includes(:tags, :card_description)
       render json: cards.map { |card| serialize(card) }
     end
 
