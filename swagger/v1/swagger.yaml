@@ -265,7 +265,7 @@ paths:
           type: string
       responses:
         '200':
-          description: card updated
+          description: card unpublished
           content:
             application/json:
               schema:
@@ -288,7 +288,7 @@ paths:
         content:
           application/json:
             schema:
-              "$ref": "#/components/schemas/CardInput"
+              "$ref": "#/components/schemas/OwnerCardInput"
   "/api/owner/tags":
     post:
       summary: Creates a tag
@@ -471,6 +471,25 @@ components:
               type: string
             pinyin:
               type: string
+          required:
+          - name
+          - pinyin
+      required:
+      - card
+    OwnerCardInput:
+      type: object
+      properties:
+        card:
+          type: object
+          properties:
+            name:
+              type: string
+            pinyin:
+              type: string
+            published_at:
+              type: string
+              format: date-time
+              nullable: true
           required:
           - name
           - pinyin
