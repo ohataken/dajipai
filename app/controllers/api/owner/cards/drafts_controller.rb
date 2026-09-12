@@ -8,6 +8,8 @@ module Api
         end
 
         def show
+          card = Card.draft.find_by!(uuid: params[:uuid])
+          render json: serialize(card)
         end
 
         private
