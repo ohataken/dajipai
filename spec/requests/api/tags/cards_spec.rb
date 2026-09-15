@@ -9,7 +9,7 @@ RSpec.describe 'api/tags/{tag_slug}/cards', type: :request do
       produces 'application/json'
 
       response '200', 'cards listed' do
-        schema type: :array, items: { '$ref' => '#/components/schemas/Card' }
+        schema '$ref' => '#/components/schemas/TagWithCards'
 
         let(:tag_slug) { 'verbs' }
 
@@ -25,9 +25,10 @@ RSpec.describe 'api/tags/{tag_slug}/cards', type: :request do
 
         run_test! do |response|
           body = JSON.parse(response.body)
-          expect(body.map { |c| c['name'] }).to contain_exactly('打')
-          expect(body.first['tags']).to eq([ { 'slug' => 'verbs', 'name' => '動詞' } ])
-          expect(body.first['card_description']).to eq({ 'content' => 'to hit' })
+          expect(body['tag']).to include('slug' => 'verbs', 'name' => '動詞')
+          expect(body['tag']['cards'].map { |c| c['name'] }).to contain_exactly('打')
+          expect(body['tag']['cards'].first['tags']).to eq([ { 'slug' => 'verbs', 'name' => '動詞' } ])
+          expect(body['tag']['cards'].first['card_description']).to eq({ 'content' => 'to hit' })
         end
       end
 
