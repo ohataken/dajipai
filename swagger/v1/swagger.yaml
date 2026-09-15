@@ -435,9 +435,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/Card"
+                "$ref": "#/components/schemas/TagWithCards"
         '404':
           description: tag not found
   "/api/tags":
@@ -498,6 +496,26 @@ components:
       required:
       - slug
       - name
+    TagWithCards:
+      type: object
+      properties:
+        tag:
+          type: object
+          properties:
+            slug:
+              type: string
+            name:
+              type: string
+            cards:
+              type: array
+              items:
+                "$ref": "#/components/schemas/Card"
+          required:
+          - slug
+          - name
+          - cards
+      required:
+      - tag
     OwnerCard:
       type: object
       properties:
