@@ -123,6 +123,38 @@ RSpec.configure do |config|
             },
             required: %w[id name slug created_at updated_at]
           },
+          OwnerCardWithTags: {
+            type: :object,
+            properties: {
+              id: { type: :integer },
+              uuid: { type: :string },
+              name: { type: :string },
+              pinyin: { type: :string },
+              published_at: { type: :string, format: 'date-time', nullable: true },
+              tags: { type: :array, items: { '$ref' => '#/components/schemas/Tag' } },
+              created_at: { type: :string, format: 'date-time' },
+              updated_at: { type: :string, format: 'date-time' }
+            },
+            required: %w[id uuid name pinyin published_at tags created_at updated_at]
+          },
+          OwnerTagWithCards: {
+            type: :object,
+            properties: {
+              tag: {
+                type: :object,
+                properties: {
+                  id: { type: :integer },
+                  name: { type: :string },
+                  slug: { type: :string },
+                  created_at: { type: :string, format: 'date-time' },
+                  updated_at: { type: :string, format: 'date-time' },
+                  cards: { type: :array, items: { '$ref' => '#/components/schemas/OwnerCardWithTags' } }
+                },
+                required: %w[id name slug created_at updated_at cards]
+              }
+            },
+            required: %w[tag]
+          },
           CardInput: {
             type: :object,
             properties: {
