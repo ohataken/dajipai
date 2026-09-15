@@ -60,6 +60,21 @@ RSpec.configure do |config|
             },
             required: %w[slug name]
           },
+          TagWithCards: {
+            type: :object,
+            properties: {
+              tag: {
+                type: :object,
+                properties: {
+                  slug: { type: :string },
+                  name: { type: :string },
+                  cards: { type: :array, items: { '$ref' => '#/components/schemas/Card' } }
+                },
+                required: %w[slug name cards]
+              }
+            },
+            required: %w[tag]
+          },
           OwnerCard: {
             type: :object,
             properties: {
