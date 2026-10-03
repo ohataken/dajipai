@@ -40,6 +40,7 @@ RSpec.configure do |config|
               uuid: { type: :string },
               name: { type: :string },
               pinyin: { type: :string },
+              syllables: { type: :array, items: { '$ref' => '#/components/schemas/PinyinSyllable' } },
               tags: { type: :array, items: { '$ref' => '#/components/schemas/Tag' } },
               card_description: {
                 type: :object,
@@ -51,6 +52,34 @@ RSpec.configure do |config|
               }
             },
             required: %w[uuid name pinyin tags card_description]
+          },
+          PinyinSyllable: {
+            type: :object,
+            properties: {
+              letters: { type: :string },
+              initial: { allOf: [ { '$ref' => '#/components/schemas/PinyinInitial' } ], nullable: true },
+              final: { '$ref' => '#/components/schemas/PinyinFinal' }
+            },
+            required: %w[letters initial final]
+          },
+          PinyinInitial: {
+            type: :object,
+            properties: {
+              letters: { type: :string },
+              place_of_articulation: {
+                type: :string,
+                enum: %w[bilabial labiodental alveolar velar palatal retroflex dental]
+              },
+              aspiration: { type: :string, enum: %w[aspirated unaspirated], nullable: true }
+            },
+            required: %w[letters place_of_articulation aspiration]
+          },
+          PinyinFinal: {
+            type: :object,
+            properties: {
+              letters: { type: :string }
+            },
+            required: %w[letters]
           },
           Tag: {
             type: :object,
