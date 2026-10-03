@@ -25,6 +25,16 @@ RSpec.describe PinyinSyllable do
     end
   end
 
+  describe ".[]" do
+    it "returns the same instance for the same letters" do
+      expect(PinyinSyllable[:he]).to equal(PinyinSyllable[:he])
+    end
+
+    it "raises for a syllable that does not exist" do
+      expect { PinyinSyllable[:bv] }.to raise_error(KeyError)
+    end
+  end
+
   describe ".new" do
     it "cannot be called from outside" do
       expect { PinyinSyllable.new }.to raise_error(NoMethodError)

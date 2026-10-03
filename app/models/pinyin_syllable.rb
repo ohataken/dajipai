@@ -55,4 +55,8 @@ class PinyinSyllable
     all[:yuan] = new(:yuan, nil, PinyinFinal[:van])
     all[:yun] = new(:yun, nil, PinyinFinal[:vn])
   end.freeze
+
+  def self.[](letters)
+    ALL.fetch(letters)
+  end
 end
