@@ -33,6 +33,17 @@ RSpec.describe PinyinInitial do
     end
   end
 
+  describe "#aspiration" do
+    it "tells aspirated and unaspirated initials apart" do
+      groups = PinyinInitial::ALL.values.group_by(&:aspiration).transform_values { |initials| initials.map(&:letters) }
+      expect(groups).to eq(
+        unaspirated: %i[b d g j zh z],
+        aspirated: %i[p t k q ch c],
+        nil => %i[m f n l h x sh r s]
+      )
+    end
+  end
+
   describe ".new" do
     it "cannot be called from outside" do
       expect { PinyinInitial.new }.to raise_error(NoMethodError)
