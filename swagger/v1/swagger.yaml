@@ -611,6 +611,10 @@ components:
           type: string
         pinyin:
           type: string
+        syllables:
+          type: array
+          items:
+            "$ref": "#/components/schemas/PinyinSyllable"
         published_at:
           type: string
           format: date-time
@@ -626,6 +630,7 @@ components:
       - uuid
       - name
       - pinyin
+      - syllables
       - published_at
       - created_at
       - updated_at

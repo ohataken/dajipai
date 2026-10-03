@@ -22,6 +22,7 @@ RSpec.describe 'api/owner/cards', type: :request do
 
         run_test! do |response|
           body = JSON.parse(response.body)
+          expect(body['syllables']).to eq([ { 'letters' => 'da', 'initial' => { 'letters' => 'd', 'place_of_articulation' => 'alveolar', 'aspiration' => 'unaspirated' }, 'final' => { 'letters' => 'a' } } ])
           expect(Time.zone.parse(body['published_at'])).to eq(Time.zone.parse('2026-09-01T00:00:00Z'))
           expect(Card.find_by!(uuid: body['uuid']).published_at).to eq(Time.zone.parse('2026-09-01T00:00:00Z'))
         end
@@ -48,6 +49,7 @@ RSpec.describe 'api/owner/cards', type: :request do
 
         run_test! do |response|
           expect(JSON.parse(response.body)['pinyin']).to eq('')
+          expect(JSON.parse(response.body)['syllables']).to eq([])
         end
       end
 
@@ -111,6 +113,7 @@ RSpec.describe 'api/owner/cards', type: :request do
 
         run_test! do |response|
           body = JSON.parse(response.body)
+          expect(body['syllables']).to eq([ { 'letters' => 'chi', 'initial' => { 'letters' => 'ch', 'place_of_articulation' => 'retroflex', 'aspiration' => 'aspirated' }, 'final' => { 'letters' => 'i' } } ])
           expect(Time.zone.parse(body['published_at'])).to eq(Time.zone.parse('2026-09-01T00:00:00Z'))
           expect(existing_card.reload.published_at).to eq(Time.zone.parse('2026-09-01T00:00:00Z'))
         end
