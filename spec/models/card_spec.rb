@@ -69,8 +69,9 @@ RSpec.describe Card, type: :model do
       expect(Card.new(pinyin: '').pinyin_syllables).to eq([])
     end
 
-    it 'raises for a syllable that does not exist' do
-      expect { Card.new(pinyin: 'bv').pinyin_syllables }.to raise_error(KeyError)
+    it 'skips what cannot be read as a syllable' do
+      expect(Card.new(pinyin: 'tái běi / shì mào').pinyin_syllables).to eq(%i[tai bei shi mao].map { |letters| PinyinSyllable[letters] })
+      expect(Card.new(pinyin: 'bv').pinyin_syllables).to eq([])
     end
   end
 

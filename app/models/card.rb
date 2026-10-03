@@ -23,7 +23,7 @@ class Card < ApplicationRecord
 
   def pinyin_syllables
     letters = pinyin.unicode_normalize(:nfd).delete(PINYIN_TONE_MARKS).unicode_normalize(:nfc).downcase.tr("ü", "v")
-    letters.split.map { |syllable| PinyinSyllable[syllable.to_sym] }
+    letters.split.filter_map { |syllable| PinyinSyllable::ALL[syllable.to_sym] }
   end
 
   private
