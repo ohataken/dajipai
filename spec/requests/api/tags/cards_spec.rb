@@ -27,6 +27,7 @@ RSpec.describe 'api/tags/{tag_slug}/cards', type: :request do
           body = JSON.parse(response.body)
           expect(body['tag']).to include('slug' => 'verbs', 'name' => '動詞')
           expect(body['tag']['cards'].map { |c| c['name'] }).to contain_exactly('打')
+          expect(body['tag']['cards'].first['syllables']).to eq([ { 'letters' => 'da', 'initial' => { 'letters' => 'd', 'place_of_articulation' => 'alveolar', 'aspiration' => 'unaspirated' }, 'final' => { 'letters' => 'a' } } ])
           expect(body['tag']['cards'].first['tags']).to eq([ { 'slug' => 'verbs', 'name' => '動詞' } ])
           expect(body['tag']['cards'].first['card_description']).to eq({ 'content' => 'to hit' })
         end

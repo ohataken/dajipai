@@ -20,6 +20,7 @@ module Api
           uuid: card.uuid,
           name: card.name,
           pinyin: card.pinyin,
+          syllables: card.pinyin_syllables,
           tags: card.tags.sort_by(&:slug).map { |tag| { slug: tag.slug, name: tag.name } },
           card_description: card.card_description && { content: card.card_description.content }
         }
