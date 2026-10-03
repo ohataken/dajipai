@@ -8,6 +8,16 @@ RSpec.describe PinyinInitial do
     end
   end
 
+  describe ".[]" do
+    it "returns the same instance for the same letters" do
+      expect(PinyinInitial[:zh]).to equal(PinyinInitial[:zh])
+    end
+
+    it "raises for unknown letters" do
+      expect { PinyinInitial[:v] }.to raise_error(KeyError)
+    end
+  end
+
   describe ".new" do
     it "cannot be called from outside" do
       expect { PinyinInitial.new }.to raise_error(NoMethodError)

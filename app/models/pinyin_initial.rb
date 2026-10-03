@@ -31,4 +31,8 @@ class PinyinInitial
     c: new(:c),
     s: new(:s)
   }.freeze
+
+  def self.[](letters)
+    ALL.fetch(letters)
+  end
 end
