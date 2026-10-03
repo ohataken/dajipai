@@ -25,6 +25,7 @@ module Api
             uuid: card.uuid,
             name: card.name,
             pinyin: card.pinyin,
+            syllables: card.pinyin_syllables,
             published_at: card.published_at,
             tags: card.tags.sort_by(&:slug).map { |tag| { slug: tag.slug, name: tag.name } },
             created_at: card.created_at,
