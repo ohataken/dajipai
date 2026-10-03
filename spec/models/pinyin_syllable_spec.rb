@@ -7,8 +7,13 @@ RSpec.describe PinyinSyllable do
       expect([ syllable.letters, syllable.initial, syllable.final ]).to eq([ :zhuang, PinyinInitial[:zh], PinyinFinal[:uang] ])
     end
 
-    it "holds every combination of an initial and its finals" do
-      expect(PinyinSyllable::ALL.size).to eq(PinyinInitial::ALL.values.sum { |initial| initial.finals.size })
+    it "holds a syllable without an initial" do
+      syllable = PinyinSyllable::ALL[:yan]
+      expect([ syllable.letters, syllable.initial, syllable.final ]).to eq([ :yan, nil, PinyinFinal[:ian] ])
+    end
+
+    it "holds every combination of an initial and its finals and the 36 syllables without an initial" do
+      expect(PinyinSyllable::ALL.size).to eq(PinyinInitial::ALL.values.sum { |initial| initial.finals.size } + 36)
     end
 
     it "does not hold combinations that do not exist" do
