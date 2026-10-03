@@ -35,6 +35,8 @@ RSpec.describe 'api/owner/tags/{tag_slug}/cards', type: :request do
           cards = body['tag']['cards'].index_by { |c| c['name'] }
           expect(cards.keys).to contain_exactly('打', '吃', '喝')
           expect(cards['打']['tags']).to eq([ { 'slug' => 'greetings', 'name' => '挨拶' }, { 'slug' => 'verbs', 'name' => '動詞' } ])
+          expect(cards['吃']['syllables']).to eq([ { 'letters' => 'chi', 'initial' => { 'letters' => 'ch', 'place_of_articulation' => 'retroflex', 'aspiration' => 'aspirated' }, 'final' => { 'letters' => 'i' } } ])
+          expect(cards['喝']['syllables']).to eq([])
           expect(cards['喝']['published_at']).to be_nil
         end
       end

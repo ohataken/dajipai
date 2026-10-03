@@ -161,12 +161,13 @@ RSpec.configure do |config|
               uuid: { type: :string },
               name: { type: :string },
               pinyin: { type: :string },
+              syllables: { type: :array, items: { '$ref' => '#/components/schemas/PinyinSyllable' } },
               published_at: { type: :string, format: 'date-time', nullable: true },
               tags: { type: :array, items: { '$ref' => '#/components/schemas/Tag' } },
               created_at: { type: :string, format: 'date-time' },
               updated_at: { type: :string, format: 'date-time' }
             },
-            required: %w[id uuid name pinyin published_at tags created_at updated_at]
+            required: %w[id uuid name pinyin syllables published_at tags created_at updated_at]
           },
           OwnerTagWithCards: {
             type: :object,
