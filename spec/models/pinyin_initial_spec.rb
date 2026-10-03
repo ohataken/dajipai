@@ -18,6 +18,21 @@ RSpec.describe PinyinInitial do
     end
   end
 
+  describe "#place_of_articulation" do
+    it "groups the initials by where they are articulated" do
+      groups = PinyinInitial::ALL.values.group_by(&:place_of_articulation).transform_values { |initials| initials.map(&:letters) }
+      expect(groups).to eq(
+        bilabial: %i[b p m],
+        labiodental: %i[f],
+        alveolar: %i[d t n l],
+        velar: %i[g k h],
+        palatal: %i[j q x],
+        retroflex: %i[zh ch sh r],
+        dental: %i[z c s]
+      )
+    end
+  end
+
   describe ".new" do
     it "cannot be called from outside" do
       expect { PinyinInitial.new }.to raise_error(NoMethodError)
