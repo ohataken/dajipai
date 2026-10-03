@@ -520,6 +520,7 @@ components:
       - uuid
       - name
       - pinyin
+      - syllables
       - tags
       - card_description
     PinyinSyllable:
