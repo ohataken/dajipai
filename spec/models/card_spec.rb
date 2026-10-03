@@ -46,6 +46,34 @@ RSpec.describe Card, type: :model do
     end
   end
 
+  describe '#pinyin_syllables' do
+    it 'returns the syllable of each space-separated pinyin without tone marks' do
+      card = Card.new(pinyin: 'hē zǎi miàn xiàn')
+
+      expect(card.pinyin_syllables).to eq(%i[he zai mian xian].map { |letters| PinyinSyllable[letters] })
+    end
+
+    it 'reads tone marks written as combining characters' do
+      expect(Card.new(pinyin: 'nǐ hǎo'.unicode_normalize(:nfd)).pinyin_syllables).to eq([ PinyinSyllable[:ni], PinyinSyllable[:hao] ])
+    end
+
+    it 'reads ü as v' do
+      expect(Card.new(pinyin: 'lǜ').pinyin_syllables).to eq([ PinyinSyllable[:lv] ])
+    end
+
+    it 'ignores case' do
+      expect(Card.new(pinyin: 'Nǐ').pinyin_syllables).to eq([ PinyinSyllable[:ni] ])
+    end
+
+    it 'returns no syllables for empty pinyin' do
+      expect(Card.new(pinyin: '').pinyin_syllables).to eq([])
+    end
+
+    it 'raises for a syllable that does not exist' do
+      expect { Card.new(pinyin: 'bv').pinyin_syllables }.to raise_error(KeyError)
+    end
+  end
+
   describe 'pinyin validation' do
     it 'allows empty pinyin on a draft card' do
       expect(Card.create!(name: '打', pinyin: '')).to be_persisted

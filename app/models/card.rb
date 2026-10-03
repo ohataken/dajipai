@@ -1,4 +1,6 @@
 class Card < ApplicationRecord
+  PINYIN_TONE_MARKS = [ 0x304, 0x301, 0x30C, 0x300 ].pack("U*").freeze
+
   before_validation :fill_uuid
 
   has_many :card_tags, dependent: :destroy
@@ -17,6 +19,11 @@ class Card < ApplicationRecord
 
   def draft?
     published_at.nil?
+  end
+
+  def pinyin_syllables
+    letters = pinyin.unicode_normalize(:nfd).delete(PINYIN_TONE_MARKS).unicode_normalize(:nfc).downcase.tr("ü", "v")
+    letters.split.map { |syllable| PinyinSyllable[syllable.to_sym] }
   end
 
   private
