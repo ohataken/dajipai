@@ -51,7 +51,7 @@ RSpec.configure do |config|
                 required: %w[content]
               }
             },
-            required: %w[uuid name pinyin tags card_description]
+            required: %w[uuid name pinyin syllables tags card_description]
           },
           PinyinSyllable: {
             type: :object,
