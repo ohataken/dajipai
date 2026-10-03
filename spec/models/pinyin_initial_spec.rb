@@ -44,6 +44,26 @@ RSpec.describe PinyinInitial do
     end
   end
 
+  describe "#finals" do
+    it "lists the finals the initial combines with" do
+      expect(PinyinInitial[:f].finals.map(&:letters)).to eq(%i[a o ei ou an en ang eng u])
+    end
+
+    it "returns the shared final instances" do
+      expect(PinyinInitial[:b].finals.first).to equal(PinyinFinal[:a])
+    end
+
+    it "excludes finals the initial does not combine with" do
+      expect(PinyinInitial[:b].finals).not_to include(PinyinFinal[:e], PinyinFinal[:ong])
+      expect(PinyinInitial[:j].finals).not_to include(PinyinFinal[:a], PinyinFinal[:v])
+      expect(PinyinInitial[:g].finals).not_to include(PinyinFinal[:i])
+    end
+
+    it "keeps v (ü) only after n and l" do
+      expect(PinyinInitial::ALL.values.select { |initial| initial.finals.include?(PinyinFinal[:v]) }.map(&:letters)).to eq(%i[n l])
+    end
+  end
+
   describe ".new" do
     it "cannot be called from outside" do
       expect { PinyinInitial.new }.to raise_error(NoMethodError)
