@@ -64,6 +64,15 @@ RSpec.describe PinyinInitial do
     end
   end
 
+  describe "#as_json" do
+    it "serializes the letters and properties without the finals" do
+      expect(JSON.parse(PinyinInitial[:zh].to_json))
+        .to eq("letters" => "zh", "place_of_articulation" => "retroflex", "aspiration" => "unaspirated")
+      expect(JSON.parse(PinyinInitial[:m].to_json))
+        .to eq("letters" => "m", "place_of_articulation" => "bilabial", "aspiration" => nil)
+    end
+  end
+
   describe ".new" do
     it "cannot be called from outside" do
       expect { PinyinInitial.new }.to raise_error(NoMethodError)
