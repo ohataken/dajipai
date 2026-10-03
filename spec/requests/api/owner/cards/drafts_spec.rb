@@ -20,12 +20,13 @@ RSpec.describe 'api/owner/cards/drafts', type: :request do
         before do
           Card.create!(name: '打', pinyin: 'dǎ', published_at: 1.day.ago)
           Card.create!(name: '吃', pinyin: 'chī', published_at: 1.day.from_now)
-          Card.create!(name: '喝').tags << Tag.create!(name: '動詞', slug: 'verbs')
+          Card.create!(name: '喝', pinyin: 'hē').tags << Tag.create!(name: '動詞', slug: 'verbs')
         end
 
         run_test! do |response|
           body = JSON.parse(response.body)
           expect(body.map { |c| c['name'] }).to contain_exactly('喝')
+          expect(body.first['syllables']).to eq([ { 'letters' => 'he', 'initial' => { 'letters' => 'h', 'place_of_articulation' => 'velar', 'aspiration' => nil }, 'final' => { 'letters' => 'e' } } ])
           expect(body.first['tags']).to eq([ { 'slug' => 'verbs', 'name' => '動詞' } ])
         end
       end
@@ -57,7 +58,7 @@ RSpec.describe 'api/owner/cards/drafts', type: :request do
 
         let(:Authorization) { 'Bearer valid-token' }
         let(:uuid) do
-          card = Card.create!(name: '喝')
+          card = Card.create!(name: '喝', pinyin: 'hē')
           card.tags << Tag.create!(name: '動詞', slug: 'verbs')
           card.uuid
         end
@@ -65,6 +66,7 @@ RSpec.describe 'api/owner/cards/drafts', type: :request do
         run_test! do |response|
           body = JSON.parse(response.body)
           expect(body['name']).to eq('喝')
+          expect(body['syllables']).to eq([ { 'letters' => 'he', 'initial' => { 'letters' => 'h', 'place_of_articulation' => 'velar', 'aspiration' => nil }, 'final' => { 'letters' => 'e' } } ])
           expect(body['published_at']).to be_nil
           expect(body['tags']).to eq([ { 'slug' => 'verbs', 'name' => '動詞' } ])
         end
