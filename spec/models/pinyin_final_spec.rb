@@ -25,6 +25,12 @@ RSpec.describe PinyinFinal do
     end
   end
 
+  describe "#as_json" do
+    it "serializes the letters" do
+      expect(JSON.parse(PinyinFinal[:ian].to_json)).to eq("letters" => "ian")
+    end
+  end
+
   describe ".new" do
     it "cannot be called from outside" do
       expect { PinyinFinal.new }.to raise_error(NoMethodError)

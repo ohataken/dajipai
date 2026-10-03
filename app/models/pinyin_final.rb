@@ -52,4 +52,8 @@ class PinyinFinal
   def self.[](letters)
     ALL.fetch(letters)
   end
+
+  def as_json(*)
+    { letters: letters }
+  end
 end

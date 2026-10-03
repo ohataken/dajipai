@@ -19,6 +19,7 @@ RSpec.describe 'api/cards', type: :request do
         run_test! do |response|
           body = JSON.parse(response.body)
           expect(body.map { |c| c['name'] }).to contain_exactly('打')
+          expect(body.first['syllables']).to eq([ { 'letters' => 'da', 'initial' => { 'letters' => 'd', 'place_of_articulation' => 'alveolar', 'aspiration' => 'unaspirated' }, 'final' => { 'letters' => 'a' } } ])
           expect(body.first['tags']).to eq([ { 'slug' => 'verbs', 'name' => '動詞' } ])
           expect(body.first['card_description']).to eq({ 'content' => 'to hit' })
         end
@@ -66,6 +67,7 @@ RSpec.describe 'api/cards', type: :request do
         let(:uuid) { existing_card.uuid }
         run_test! do |response|
           body = JSON.parse(response.body)
+          expect(body['syllables']).to eq([ { 'letters' => 'da', 'initial' => { 'letters' => 'd', 'place_of_articulation' => 'alveolar', 'aspiration' => 'unaspirated' }, 'final' => { 'letters' => 'a' } } ])
           expect(body['tags']).to eq([ { 'slug' => 'verbs', 'name' => '動詞' } ])
         end
       end

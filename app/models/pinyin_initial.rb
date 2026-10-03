@@ -38,4 +38,8 @@ class PinyinInitial
   def self.[](letters)
     ALL.fetch(letters)
   end
+
+  def as_json(*)
+    { letters: letters, place_of_articulation: place_of_articulation, aspiration: aspiration }
+  end
 end
