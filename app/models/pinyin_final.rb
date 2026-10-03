@@ -48,4 +48,8 @@ class PinyinFinal
     van: new(:van),
     vn: new(:vn)
   }.freeze
+
+  def self.[](letters)
+    ALL.fetch(letters)
+  end
 end

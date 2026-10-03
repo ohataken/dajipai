@@ -15,6 +15,16 @@ RSpec.describe PinyinFinal do
     end
   end
 
+  describe ".[]" do
+    it "returns the same instance for the same letters" do
+      expect(PinyinFinal[:ian]).to equal(PinyinFinal[:ian])
+    end
+
+    it "raises for unknown letters" do
+      expect { PinyinFinal[:iou] }.to raise_error(KeyError)
+    end
+  end
+
   describe ".new" do
     it "cannot be called from outside" do
       expect { PinyinFinal.new }.to raise_error(NoMethodError)
