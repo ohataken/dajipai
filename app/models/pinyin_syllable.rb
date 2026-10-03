@@ -59,4 +59,8 @@ class PinyinSyllable
   def self.[](letters)
     ALL.fetch(letters)
   end
+
+  def as_json(*)
+    { letters: letters, initial: initial, final: final }
+  end
 end

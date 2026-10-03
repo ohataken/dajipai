@@ -35,6 +35,20 @@ RSpec.describe PinyinSyllable do
     end
   end
 
+  describe "#as_json" do
+    it "serializes the letters with the initial and the final" do
+      expect(JSON.parse(PinyinSyllable[:zai].to_json)).to eq(
+        "letters" => "zai",
+        "initial" => { "letters" => "z", "place_of_articulation" => "dental", "aspiration" => "unaspirated" },
+        "final" => { "letters" => "ai" }
+      )
+    end
+
+    it "serializes a syllable without an initial" do
+      expect(JSON.parse(PinyinSyllable[:yan].to_json)).to eq("letters" => "yan", "initial" => nil, "final" => { "letters" => "ian" })
+    end
+  end
+
   describe ".new" do
     it "cannot be called from outside" do
       expect { PinyinSyllable.new }.to raise_error(NoMethodError)
