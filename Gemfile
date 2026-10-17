@@ -32,7 +32,7 @@ gem "rack-cors"
 
 group :production do
   # Use PostgreSQL as the database for Active Record in production
-  gem "pg", "~> 1.5"
+  gem "pg", "~> 1.7"
 end
 
 group :development, :test do
